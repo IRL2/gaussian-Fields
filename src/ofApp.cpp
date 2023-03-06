@@ -59,7 +59,7 @@ void ofApp::draw() {
 	float KE = pParticleEnsemble->getTotalKineticEnergy();
 
 	ofSetColor(230);
-	ofDrawBitmapString(currentMode + " - hold 'f' to disable force and press Spacebar to reset.", 10, 20);
+	ofDrawBitmapString(currentMode + " - holding 'f' zeros out the forces; press Spacebar to reset.", 10, 20);
 	ofDrawBitmapString("\nFPS: " + ofToString(framesPerSecond), 10, 40);
 	ofDrawBitmapString("\ntotal KE: " + ofToString(KE), 150, 40);
 }
