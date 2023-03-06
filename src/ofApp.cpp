@@ -9,7 +9,7 @@ void ofApp::setup() {
 //	currentMode = "OF_PARTICLES";
 	currentMode = "HF_PARTICLES";
 	nattractors = 2;    // 2;
-	nparticles = 2000;  // 2000;
+	nparticles = 5000;  // 2000;
 	bool debug = true;
 
 	pParticleEnsemble = new ofParticleEnsemble(nparticles);
