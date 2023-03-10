@@ -8,7 +8,7 @@ void ofApp::setup() {
 
 //	currentMode = "OF_PARTICLES";
 	currentMode = "HF_PARTICLES";
-	nattractors = 3;    // 2;
+	nattractors = 4;    // 2;
 	nparticles = 12000;  // 2000;
 	bool debug = true;
 
