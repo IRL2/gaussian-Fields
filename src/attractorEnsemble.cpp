@@ -21,10 +21,25 @@ void attractorEnsemble::setNonRandomPositions(){
 }
 
 void attractorEnsemble::setRandomPositions() {
-	for (int i = 0; i < numberOfAttractors; i++) {
-		glm::vec3 originPoints = glm::vec3(ofRandom(100, ofGetWidth() - 100), ofRandom(100, ofGetHeight() - 100), 0);
+    float centerX, centerY, centerZ, theta, thetaStep, maxLength, vectorLength;
+    float xpos, ypos;
+
+    centerX = ofGetWidth()/2;
+    centerY = ofGetHeight()/2;
+    centerZ = 0.0;
+    maxLength = min(centerX,centerY);
+    vectorLength = ofRandom(0.0, maxLength-100);
+    
+    thetaStep = 2.0*PI/numberOfAttractors;
+    theta = PI/2.0;
+    
+    for (int i = 0; i < numberOfAttractors; i++) {
+        xpos = centerX + vectorLength * cos(theta);
+        ypos = centerY + vectorLength * sin(theta);
+		glm::vec3 originPoints = glm::vec3(xpos, ypos, 0);
 		attractPointsPosition[i] = originPoints;
 		attractorVector[i].set_originalPosition(originPoints);
+        theta += thetaStep;
 	}
 }
 

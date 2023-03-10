@@ -53,7 +53,7 @@ void ofParticleEnsemble::setNonRandomPositionsAndVelocities(vector <attractor> a
 	height = ofGetHeight();
 
 	particleIndex = 0;
-	nAttractors = attractorVec.size();
+	nAttractors = int(attractorVec.size());
 	loopSize = numberOfParticles/nAttractors;
 
 	loopSizeVector.assign(nAttractors, loopSize);
@@ -211,7 +211,7 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 
 			//  Timestep = 1.0/(double)ofGetFrameRate();
 
-	nAttractors = attractorVec.size();
+	nAttractors = int(attractorVec.size());
 	dt = timestep;
 
 	if (BerendsenThermostat) {                //  Berendsen Thermostat
