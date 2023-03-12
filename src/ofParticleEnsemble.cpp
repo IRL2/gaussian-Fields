@@ -3,14 +3,14 @@
 
 
 //------------------------------------------------------------------
-ofParticleEnsemble::ofParticleEnsemble(int n) {
+ofParticleEnsemble::ofParticleEnsemble(int n, float dt) {
 	kb = 8.314;
 	scaleFactor = 1.0;
 	numberOfParticles = n;
 	particleVector.assign(n, ofParticle());
-	step = 0;
+	stepNumber = 0;
 	BerendsenThermostat = false;
-	timestep = 0.009;
+	timestep = dt;
 	mass = 1.0;
 }
 
@@ -313,7 +313,7 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 		particleVector[i].setvz(particleVector[i].getvz() + (particleVector[i].getfz() + particleVector[i].getLast_fz()) * factor);
 	}
 
-	++step;                                 
+	++stepNumber;
 }
 
 // this function is for the simple Berendsen Thermostat

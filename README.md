@@ -29,8 +29,8 @@ Notes
 Running:
 1.  Pressing::
     * 'r' reinitializes the attractors & the particles
-    * 'z' zeros out the forces (for as long as it is pressed)
+    * 'z' assigns values of zero to the forces (for as long as it is pressed)
+    * 'b' allows you to switch whether the velocity verlet integrator runs in the forward or the backward direction
     * Spacebar pauses/plays the simulation
-    * 'f' allows you to switch whether the velocity verlet integrator runs in the forward or the backward direction
 2.  If you run into performance issues, reduce within ofApp.cpp the number of attractors 'nattractors' & number of particles 'nparticles'
 3.  Have fun!

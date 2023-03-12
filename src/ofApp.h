@@ -43,4 +43,6 @@ class ofApp : public ofBaseApp{
     
 	    float framesPerSecond;
 		
+        float simulationTimestep;
+        int nSimulationStepsPerRenderStep;
 };

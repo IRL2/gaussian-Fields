@@ -8,7 +8,7 @@ class ofParticle;
 class ofParticleEnsemble{
 
     public:
-		ofParticleEnsemble(int n);
+		ofParticleEnsemble(int n, float dt);
 		~ofParticleEnsemble();
 		void setRandomPositionsAndVelocities(int n);
 		void setNonRandomPositionsAndVelocities(vector <attractor> attractorVec);
@@ -32,9 +32,9 @@ class ofParticleEnsemble{
 	private:
 		vector <ofParticle> particleVector;
 		int	    numberOfParticles;
-		int	    step;
-		float  kb, BerendsenCoupling, Tequilibrium;
-		float  temperature, scaleFactor, InitialKE;
+		int	    stepNumber;
+		float   kb, BerendsenCoupling, Tequilibrium;
+		float   temperature, scaleFactor, InitialKE;
 		bool    BerendsenThermostat;
 		float	TotalKineticEnergy;
 		float	TotalPotentialEnergy;

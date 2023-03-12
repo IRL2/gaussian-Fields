@@ -12,8 +12,10 @@ void ofApp::setup() {
     forBackMode = "FORWARD";
 	nattractors = 4;    // 2;
 	nparticles = 22000;  // 2000;
+    simulationTimestep = 0.008;
+    nSimulationStepsPerRenderStep = 1;
     
-	pParticleEnsemble = new ofParticleEnsemble(nparticles);
+	pParticleEnsemble = new ofParticleEnsemble(nparticles,simulationTimestep);
 	pAttractorEnsemble = new attractorEnsemble(nattractors);
 
 	pAttractorEnsemble->setAttractorTypes("gaussian"); // options are "gaussian" or "quadratic"
@@ -35,7 +37,9 @@ void ofApp::update() {
             pParticleEnsemble->of_propagatePositionsVelocities(attractorPositions);
         }
         else if (particleMode == "HF_PARTICLES") {
-            pParticleEnsemble->vv_propagatePositionsVelocities(pAttractorEnsemble->getAttractorVector());
+            for (int jj = 0; jj < nSimulationStepsPerRenderStep; jj++){
+                pParticleEnsemble->vv_propagatePositionsVelocities(pAttractorEnsemble->getAttractorVector());
+            }
         }
     }
 	framesPerSecond = 1.0/ofGetLastFrameTime();
@@ -59,12 +63,12 @@ void ofApp::draw() {
 
     ofSetColor(230);
     writePosition = 10;
-	ofDrawBitmapString("'r' resets attractor positions. Holding 'z' zeros out the forces. 'Space' pauses the sim.", 10, 20);
+	ofDrawBitmapString("Press 'r' to reset attractor positions. Holding 'z' zeros out the forces.", 10, 20);
 	ofDrawBitmapString("FPS: " + ofToString(int(framesPerSecond)), writePosition, 40);
     writePosition += 80;
-    ofDrawBitmapString("Play/Pause: " + ofToString(playPauseMode), writePosition, 40);
-    writePosition += 150;
-    ofDrawBitmapString("For/Back: " + ofToString(forBackMode), writePosition, 40);
+    ofDrawBitmapString("Play/Pause (Spacebar): " + ofToString(playPauseMode), writePosition, 40);
+    writePosition += 250;
+    ofDrawBitmapString("For/Backward ('b'): " + ofToString(forBackMode), writePosition, 40);
     
     writePosition = 10;
     ofDrawBitmapString("total KE: " + ofToString(KE), writePosition, 60);
@@ -80,11 +84,11 @@ void ofApp::keyPressed(int key) {
     if((key == ' ') && playPauseMode == "PLAY"){playPauseMode = "PAUSE";}
     else if((key == ' ') && playPauseMode == "PAUSE"){playPauseMode = "PLAY";}
 
-    if((key == 'f') && forBackMode == "FORWARD"){
+    if((key == 'b') && forBackMode == "FORWARD"){
         forBackMode = "BACKWARD";
         pParticleEnsemble->invertVelocities();
     }
-    else if((key == 'f') && forBackMode == "BACKWARD"){
+    else if((key == 'b') && forBackMode == "BACKWARD"){
         forBackMode = "FORWARD";
         pParticleEnsemble->invertVelocities();
     }
