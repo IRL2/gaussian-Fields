@@ -9,8 +9,8 @@ public:
 	attractorEnsemble(int);
 	~attractorEnsemble();
 
-	void setRandomPositions();
-	void setNonRandomPositions();
+	void setRadialPositions();
+	void setPositionsOnALine();
 	void setAttractorTypes(std::string);
 
 	vector <glm::vec3> getPositions() { return attractPointsPosition; };

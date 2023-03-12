@@ -17,7 +17,7 @@ void ofApp::setup() {
 	pAttractorEnsemble->setAttractorTypes("gaussian"); // options are "gaussian" or "quadratic"
 //	pAttractorEnsemble->setAttractorTypes("quadratic"); // options are "gaussian" or "quadratic"
 
-    pAttractorEnsemble->setNonRandomPositions();
+    pAttractorEnsemble->setPositionsOnALine();
     pParticleEnsemble->setNonRandomPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
 
 }
@@ -63,12 +63,12 @@ void ofApp::draw() {
 void ofApp::keyPressed(int key) {
 	
 	if ((key == ' ') && (currentMode == "OF_PARTICLES")) {
-		pAttractorEnsemble->setRandomPositions();
+		pAttractorEnsemble->setRadialPositions();
 		pParticleEnsemble->setRandomPositionsAndVelocities(nparticles);
 	}
 
 	if ((key == ' ') && (currentMode == "HF_PARTICLES")) {
-		pAttractorEnsemble->setRandomPositions();
+		pAttractorEnsemble->setRadialPositions();
 		pParticleEnsemble->setNonRandomPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
 	}
 }

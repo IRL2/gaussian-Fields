@@ -12,7 +12,7 @@ attractorEnsemble::attractorEnsemble(int n) {
 
 attractorEnsemble::~attractorEnsemble() {}
 
-void attractorEnsemble::setNonRandomPositions(){
+void attractorEnsemble::setPositionsOnALine(){
 	for (int i = 0; i < numberOfAttractors; i++) {
 		glm::vec3 originPoints = glm::vec3((i + 1) * ofGetWidth() / (numberOfAttractors + 1), ofGetHeight() / 2, 0);
  		attractPointsPosition[i] = originPoints;
@@ -20,7 +20,7 @@ void attractorEnsemble::setNonRandomPositions(){
 	}
 }
 
-void attractorEnsemble::setRandomPositions() {
+void attractorEnsemble::setRadialPositions() {
     float centerX, centerY, centerZ, theta, thetaStep, maxLength, vectorLength;
     float xpos, ypos;
 
@@ -31,7 +31,7 @@ void attractorEnsemble::setRandomPositions() {
     vectorLength = ofRandom(0.0, maxLength-100);
     
     thetaStep = 2.0*PI/numberOfAttractors;
-    theta = PI/2.0;
+    theta = PI/-2.0;
     
     for (int i = 0; i < numberOfAttractors; i++) {
         xpos = centerX + vectorLength * cos(theta);
