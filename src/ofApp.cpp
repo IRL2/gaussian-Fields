@@ -11,7 +11,7 @@ void ofApp::setup() {
     playPauseMode = "PLAY";
     forBackMode = "FORWARD";
 	nattractors = 4;    // 2;
-	nparticles = 8000;  // 2000;
+	nparticles = 12000;  // 2000;
     
 	pParticleEnsemble = new ofParticleEnsemble(nparticles);
 	pAttractorEnsemble = new attractorEnsemble(nattractors);
