@@ -9,7 +9,7 @@ void ofApp::setup() {
 //	currentMode = "OF_PARTICLES";
 	currentMode = "HF_PARTICLES";
 	nattractors = 4;    // 2;
-	nparticles = 10000;  // 2000;
+	nparticles = 18000;  // 2000;
 
 	pParticleEnsemble = new ofParticleEnsemble(nparticles);
 	pAttractorEnsemble = new attractorEnsemble(nattractors);
@@ -52,22 +52,25 @@ void ofApp::draw() {
 	}
 
 	float KE = pParticleEnsemble->getTotalKineticEnergy();
+    float vL = pAttractorEnsemble->get_vectorLength();
 
 	ofSetColor(230);
-	ofDrawBitmapString(currentMode + " - holding 'f' zeros out the forces; press Spacebar to reset.", 10, 20);
-	ofDrawBitmapString("\nFPS: " + ofToString(framesPerSecond), 10, 40);
-	ofDrawBitmapString("\ntotal KE: " + ofToString(KE), 150, 40);
+	ofDrawBitmapString(currentMode + " - pressing 'r' resets attractor positions. holding 'f' zeros out the forces", 10, 20);
+	ofDrawBitmapString("FPS: " + ofToString(framesPerSecond), 10, 40);
+	ofDrawBitmapString("total KE: " + ofToString(KE), 150, 40);
+    ofDrawBitmapString("nparticles: " + ofToString(nparticles), 350, 40);
+    ofDrawBitmapString("vectorLength: " + ofToString(vL), 525, 40);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
 	
-	if ((key == ' ') && (currentMode == "OF_PARTICLES")) {
+	if ((key == 'r') && (currentMode == "OF_PARTICLES")) {
 		pAttractorEnsemble->setRadialPositions();
 		pParticleEnsemble->setRandomPositionsAndVelocities(nparticles);
 	}
 
-	if ((key == ' ') && (currentMode == "HF_PARTICLES")) {
+	if ((key == 'r') && (currentMode == "HF_PARTICLES")) {
 		pAttractorEnsemble->setRadialPositions();
 		pParticleEnsemble->setNonRandomPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
 	}

@@ -35,9 +35,9 @@ glm::vec3 ofParticle::calculateGaussianForce(attractor attractorObject) {
 	float prefactor, exp_numerator;
 	glm::vec3 forceVector;
 
-    dx = getx() - attractorObject.get_originalPosition().x;
-    dy = gety() - attractorObject.get_originalPosition().y;
-    dz = getz() - attractorObject.get_originalPosition().z;
+    dx = pos.x - attractorObject.get_originalPosition().x;
+    dy = pos.y - attractorObject.get_originalPosition().y;
+    dz = pos.z - attractorObject.get_originalPosition().z;
     
     exp_numerator = dx * dx + dy * dy + dz * dz;
     prefactor = -1.0 * attractorObject.get_coefficient() * exp(exp_numerator / attractorObject.get_exp_denominator());

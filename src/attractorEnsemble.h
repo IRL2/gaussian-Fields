@@ -21,6 +21,8 @@ public:
 
 	void displacePositions();
 	void drawPositions();
+    
+    float get_vectorLength(){return vectorLength;};
 
 private:
 
@@ -28,5 +30,7 @@ private:
 
 	vector<attractor> attractorVector;
 	vector <glm::vec3> attractPointsPosition;
+    
+    float vectorLength;
 
 };

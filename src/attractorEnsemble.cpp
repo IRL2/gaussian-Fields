@@ -18,10 +18,11 @@ void attractorEnsemble::setPositionsOnALine(){
  		attractPointsPosition[i] = originPoints;
 		attractorVector[i].set_originalPosition(originPoints);
 	}
+    vectorLength = 0;
 }
 
 void attractorEnsemble::setRadialPositions() {
-    float centerX, centerY, centerZ, theta, thetaStep, maxLength, vectorLength;
+    float centerX, centerY, centerZ, theta, thetaStep, maxLength;
     float xpos, ypos;
 
     centerX = ofGetWidth()/2;
