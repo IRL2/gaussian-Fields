@@ -14,12 +14,12 @@ Build: The way that I build this project is as follows:
 6.  build the project
 7.  run the project
 8.  if you get a VS error when you try to run, try setting gaussianFields as the single startup project
-    a. right click "Solution 'gaussianFields'" in the VS solution explorer
-    b. -> Properties
-    c. select 'Single Startup Project', and indicate 'gaussianFields'
+    1. right click "Solution 'gaussianFields'" in the VS solution explorer
+    2. -> Properties
+    3. select 'Single Startup Project', and indicate 'gaussianFields'
 
 Running:
-1.  pressing spacebar reinitializes the attractors & the particles
+1.  pressing 'r' reinitializes the attractors & the particles
 2.  pressing 'f' temporarily zeros out the forces
 3.  if you run into performance issues, reduce within ofApp.cpp the number of attractors 'nattractors' & number of particles 'nparticles'
 4.  have fun!
