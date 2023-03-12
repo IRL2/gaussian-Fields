@@ -14,9 +14,9 @@ Build: The way that I build this project is as follows:
 6.  build the project
 7.  run the project
 8.  if you get a VS error when you try to run, try setting gaussianFields as the single startup project
-    1. right click "Solution 'gaussianFields'" in the VS solution explorer
-    2. -> Properties
-    3. select 'Single Startup Project', and indicate 'gaussianFields'
+    * right click "Solution 'gaussianFields'" in the VS solution explorer
+    * -> Properties
+    * select 'Single Startup Project', and indicate 'gaussianFields'
 
 Running:
 1.  pressing 'r' reinitializes the attractors & the particles
