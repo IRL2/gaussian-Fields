@@ -1,10 +1,10 @@
 # gaussian-Fields
 
-This project build has been successfully built with the following:
+Info: This project has been successfully built with the following:
 1.  visual studio 2019 or Xcode 14
 2.  openFrameworks of_v0.11.2_vs2017_release
 
-The way that I built it is as follows:
+Build: The way that I build this project is as follows:
 1.  download from https://openframeworks.cc/download/ the latest windows version of openFrameworks
     (i downloaded of_v0.11.2_vs2017_release.zip, either for windows or Mac depending what you are using)
 2.  extract the zip
@@ -17,5 +17,9 @@ The way that I built it is as follows:
     a. right click "Solution 'gaussianFields'" in the VS solution explorer
     b. -> Properties
     c. select 'Single Startup Project', and indicate 'gaussianFields'
-9.  pressing spacebar reinitializes things; pressing 'f' temporarily zeros out the forces
-10. have fun!
+
+Running:
+1.  pressing spacebar reinitializes the attractors & the particles
+2.  pressing 'f' temporarily zeros out the forces
+3.  if you run into performance issues, reduce within ofApp.cpp the number of attractors 'nattractors' & number of particles 'nparticles'
+4.  have fun!
