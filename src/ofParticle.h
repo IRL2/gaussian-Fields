@@ -71,9 +71,6 @@ class ofParticle{
 
 		glm::vec3 get_frc() { return frc; };
 		void set_frc(glm::vec3 forces) { frc = forces; };
-
-//		glm::vec3 calculateQuadraticForce(glm::vec3 attractorXYZ);
-//		glm::vec3 calculateGaussianForce(glm::vec3 attractorXYZ);
  
         glm::vec3 calculateQuadraticForce(attractor attractorObject);
         glm::vec3 calculateGaussianForce(attractor attractorObject);

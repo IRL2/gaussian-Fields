@@ -34,6 +34,6 @@ private:
     float exp_denominator;
     
     // the form of the exponential attractor potential energy is:
-    // V(r) = 
+    // V(r) = [amplitude/(sigma)**2] * exp[-1/2 * ((r-r0)/sigma)**2)]
 
 };
