@@ -24,7 +24,7 @@ Notes
     * in the project navigator, click on gaussian-Fields
     * under the 'General' tab, go to 'Minimum Deployments'
     * in the 'macOS' dropdown menu, ensure the selection of $(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)
-    * building commit e7ddaf8 in release mode on my macbook air m2 2022 (macOS 13.2.1), 22,000 particles + 4 attractors ran at 60 FPS 
+    * building commit 06d3176 in release mode on my macbook air m2 2022 (macOS 13.2.1), 22,000 particles + 4 attractors ran at 60 FPS 
 
 Running:
 1.  Pressing::
