@@ -8,8 +8,6 @@ ofParticle::ofParticle() {
 
 ofParticle::~ofParticle() {}
 
-
-//glm::vec3 ofParticle::calculateQuadraticForce(glm::vec3 attractXYZ) {
 glm::vec3 ofParticle::calculateQuadraticForce(attractor attractorObject) {
 
 	float ax, ay, az, dx, dy, dz, scaleFactor(10.0);
