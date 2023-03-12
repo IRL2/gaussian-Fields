@@ -26,7 +26,8 @@ class ofApp : public ofBaseApp{
 
 
     private:
-		string currentMode;
+		string particleMode;
+        string playPauseMode;
 
 		ofParticleEnsemble *pParticleEnsemble;
 		attractorEnsemble *pAttractorEnsemble;
