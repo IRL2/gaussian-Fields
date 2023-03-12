@@ -9,8 +9,7 @@ void ofApp::setup() {
 //	currentMode = "OF_PARTICLES";
 	currentMode = "HF_PARTICLES";
 	nattractors = 4;    // 2;
-	nparticles = 20000;  // 2000;
-	bool debug = true;
+	nparticles = 10000;  // 2000;
 
 	pParticleEnsemble = new ofParticleEnsemble(nparticles);
 	pAttractorEnsemble = new attractorEnsemble(nattractors);
@@ -18,13 +17,9 @@ void ofApp::setup() {
 	pAttractorEnsemble->setAttractorTypes("gaussian"); // options are "gaussian" or "quadratic"
 //	pAttractorEnsemble->setAttractorTypes("quadratic"); // options are "gaussian" or "quadratic"
 
-	if (!debug) {
-		pAttractorEnsemble->setRandomPositions();
-	}
-	else if (debug) {
-		pAttractorEnsemble->setNonRandomPositions();
-		pParticleEnsemble->setNonRandomPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
-	}
+    pAttractorEnsemble->setNonRandomPositions();
+    pParticleEnsemble->setNonRandomPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
+
 }
 
 //--------------------------------------------------------------
