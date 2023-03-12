@@ -69,12 +69,19 @@ void attractorEnsemble::setAttractorTypes(string label) {
 
 void attractorEnsemble::drawPositions() {
 
+    float x, y;
+    
 	ofSetColor(190);
 
-	for (unsigned int i = 0; i < attractPointsPosition.size(); i++) {
+	for (unsigned int i = 0; i < attractorVector.size(); i++) {
+        x = attractorVector[i].get_originalPosition().x;
+        y = attractorVector[i].get_originalPosition().y;
+        
 		ofNoFill();
-		ofDrawCircle(attractPointsPosition[i], 10);
-		ofFill();
-		ofDrawCircle(attractPointsPosition[i], 4);
+        ofSetCircleResolution(100);
+		ofDrawCircle(x, y, attractorVector[i].get_sigma());
+
+        ofFill();
+		ofDrawCircle(x, y, 4);
 	}
 }

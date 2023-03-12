@@ -1,7 +1,12 @@
 #include "attractor.h"
 
 //------------------------------------------------------------------
-attractor::attractor() {}
+attractor::attractor() {
+    amplitude = 50000.0;
+    sigma = 100.0;
+    exp_denominator = -2.0 * sigma * sigma;
+    coefficient = amplitude / (sigma * sigma);
+}
 
 attractor::~attractor() {}
 

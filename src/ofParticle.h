@@ -1,5 +1,6 @@
 #pragma once
 #include "ofMain.h"
+#include "attractor.h"
 
 class ofParticle{
 
@@ -71,8 +72,11 @@ class ofParticle{
 		glm::vec3 get_frc() { return frc; };
 		void set_frc(glm::vec3 forces) { frc = forces; };
 
-		glm::vec3 calculateQuadraticForce(glm::vec3 attractorXYZ);
-		glm::vec3 calculateGaussianForce(glm::vec3 attractorXYZ);
+//		glm::vec3 calculateQuadraticForce(glm::vec3 attractorXYZ);
+//		glm::vec3 calculateGaussianForce(glm::vec3 attractorXYZ);
+ 
+        glm::vec3 calculateQuadraticForce(attractor attractorObject);
+        glm::vec3 calculateGaussianForce(attractor attractorObject);
 
 		float exp256(float x) {
 			x = 1.0 + x / 256.0;

@@ -285,10 +285,12 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 		for (kk = 0; kk < nAttractors; ++kk) {
 			if (!ofGetKeyPressed('f')) {
 				if (attractorVec[kk].getAttractorType() == "quadratic") {
-					forces = particleVector[i].calculateQuadraticForce(attractorVec[kk].get_originalPosition());
+//					forces = particleVector[i].calculateQuadraticForce(attractorVec[kk].get_originalPosition());
+                    forces = particleVector[i].calculateQuadraticForce(attractorVec[kk]);
 				}
 				else if (attractorVec[kk].getAttractorType() == "gaussian") {
-					forces = particleVector[i].calculateGaussianForce(attractorVec[kk].get_originalPosition());
+//					forces = particleVector[i].calculateGaussianForce(attractorVec[kk].get_originalPosition());
+                    forces = particleVector[i].calculateGaussianForce(attractorVec[kk]);
 				}
 			}
 			else {

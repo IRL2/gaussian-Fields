@@ -9,20 +9,19 @@ ofParticle::ofParticle() {
 ofParticle::~ofParticle() {}
 
 
-glm::vec3 ofParticle::calculateQuadraticForce(glm::vec3 attractXYZ) {
+//glm::vec3 ofParticle::calculateQuadraticForce(glm::vec3 attractXYZ) {
+glm::vec3 ofParticle::calculateQuadraticForce(attractor attractorObject) {
 
 	float ax, ay, az, dx, dy, dz, scaleFactor(10.0);
 	glm::vec3 forceVector;
 
-	ax = attractXYZ.x;
-	ay = attractXYZ.y;
-	az = attractXYZ.z;
+    ax = attractorObject.get_originalPosition().x;
+    ay = attractorObject.get_originalPosition().y;
+    az = attractorObject.get_originalPosition().z;
 
 	dx = getx() - ax;
 	dy = gety() - ay;
 	dz = getz() - az;
-
-//	dist = sqrt(dx * dx + dy * dy + dz * dz);
 
 	forceVector.x = -2.0 * scaleFactor * dx;
 	forceVector.y = -2.0 * scaleFactor * dy;
@@ -32,28 +31,22 @@ glm::vec3 ofParticle::calculateQuadraticForce(glm::vec3 attractXYZ) {
 
 };
 
-glm::vec3 ofParticle::calculateGaussianForce(glm::vec3 attractXYZ) {
-
-	float ax, ay, az, dx, dy, dz;
-	float amplitude(50000.0), sigma(100.0), prefactor, argnum, argden;
+glm::vec3 ofParticle::calculateGaussianForce(attractor attractorObject) {
+    
+	float dx, dy, dz;
+	float prefactor, exp_numerator;
 	glm::vec3 forceVector;
 
-	ax = attractXYZ.x;
-	ay = attractXYZ.y;
-	az = attractXYZ.z;
+    dx = getx() - attractorObject.get_originalPosition().x;
+    dy = gety() - attractorObject.get_originalPosition().y;
+    dz = getz() - attractorObject.get_originalPosition().z;
+    
+    exp_numerator = dx * dx + dy * dy + dz * dz;
+    prefactor = -1.0 * attractorObject.get_coefficient() * exp(exp_numerator / attractorObject.get_exp_denominator());
 
-	dx = getx() - ax;
-	dy = gety() - ay;
-	dz = getz() - az;
-
-	argnum = dx * dx + dy * dy + dz * dz;
-
-	argden = -2.0 * sigma * sigma;
-	prefactor = (amplitude / (sigma * sigma)) * exp(argnum / argden);
-
-	forceVector.x = -1.0 * prefactor * dx;
-	forceVector.y = -1.0 * prefactor * dy;
-	forceVector.z = -1.0 * prefactor * dz;
+	forceVector.x = prefactor * dx;
+	forceVector.y = prefactor * dy;
+	forceVector.z = prefactor * dz;
 
 	return forceVector;
 
