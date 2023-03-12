@@ -19,7 +19,9 @@ The way that I build this project is as follows:
     * select 'Single Startup Project', and indicate 'gaussianFields'
 
 Running:
-1.  Pressing 'r' reinitializes the attractors & the particles
-2.  Pressing 'f' zeros out the forces for as long as 'f' is pressed
-3.  If you run into performance issues, reduce within ofApp.cpp the number of attractors 'nattractors' & number of particles 'nparticles'
-4.  Have fun!
+1.  Pressing::
+    * 'r' reinitializes the attractors & the particles
+    * 'f' zeros out the forces for as long as 'f' is pressed
+    * Spacebar pauses/plays the simulation
+2.  If you run into performance issues, reduce within ofApp.cpp the number of attractors 'nattractors' & number of particles 'nparticles'
+3.  Have fun!
