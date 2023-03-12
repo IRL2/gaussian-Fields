@@ -28,6 +28,7 @@ class ofApp : public ofBaseApp{
     private:
 		string particleMode;
         string playPauseMode;
+        string forBackMode;
 
 		ofParticleEnsemble *pParticleEnsemble;
 		attractorEnsemble *pAttractorEnsemble;
@@ -36,8 +37,10 @@ class ofApp : public ofBaseApp{
 	    vector <glm::vec3> attractPointsWithMovement;
 		vector <attractor> attractorVector;
 
-		int nattractors;
+        int writePosition;
+        int nattractors;
 		int nparticles;
+    
 	    float framesPerSecond;
 		
 };

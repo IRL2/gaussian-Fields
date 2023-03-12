@@ -25,6 +25,8 @@ class ofParticleEnsemble{
 
 		void SetPotentialEnergy(float PE) { TotalPotentialEnergy = PE; };
 
+        void invertVelocities();
+    
 		void draw();
 
 	private:

@@ -145,7 +145,7 @@ void ofParticleEnsemble::of_propagatePositionsVelocities(vector <glm::vec3> attr
 				vel *= drag;
 
 				//lets also limit our attraction to a certain distance and don't apply if 'f' key is pressed
-				if (dist < 300 && dist > 40 && !ofGetKeyPressed('f')) {
+				if (dist < 300 && dist > 40 && !ofGetKeyPressed('z')) {
 					vel += frc * 0.003;
 				}
 				else {
@@ -187,6 +187,14 @@ void ofParticleEnsemble::of_propagatePositionsVelocities(vector <glm::vec3> attr
 
 }
 
+void ofParticleEnsemble::invertVelocities(){
+    for (int i = 0; i < particleVector.size(); ++i){
+        particleVector[i].setvx(-1.0*particleVector[i].getvx());
+        particleVector[i].setvy(-1.0*particleVector[i].getvy());
+        particleVector[i].setvz(-1.0*particleVector[i].getvz());
+    }
+}
+
 void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attractorVec) {
 
 	int i, kk, nAttractors, nForceFieldObjects;
@@ -207,10 +215,6 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 	//		NumberOfParticlesChangedFlag = false;
 	//	}
 
-	//	else {
-
-			//  Timestep = 1.0/(double)ofGetFrameRate();
-
 	nAttractors = int(attractorVec.size());
 	dt = timestep;
 
@@ -220,8 +224,8 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 
 	CalculateKineticEnergiesAndTemperature();
 	T=getTotalKineticEnergy();
-	//  V=GetPotentialEnergy();                // get the potential energy - pretty useless when the external field is time dependent - but useful for 
-	//  TotalEnergy=T+V;                       // testing that new forceFields conserve energy
+	//  V=GetPotentialEnergy();                // get the potential energy - useless when  external field is time dependent
+	//  TotalEnergy=T+V;                       // but helps testing that new forceFields conserve energy
 
 	//this loop uses verlet scheme (VV) to propagate the positions forward one step
 	for (i = 0; i < particleVector.size(); ++i) {
@@ -229,23 +233,22 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 		particleVector[i].setLast_y(particleVector[i].gety()); 
 		particleVector[i].setLast_z(particleVector[i].getz());
 
-		factor = 0.5 * dt * dt / mass; //factor = 0.5 * dt * dt / GetParticleMass(i);
-		pxnew = particleVector[i].getx() + dt * particleVector[i].getvx() + factor * particleVector[i].getfx(); //pxnew = GetXParticlePosition(i) + GetXParticleVelocity(i) * dt + GetXParticleForce(i) * factor;
-		pynew = particleVector[i].gety() + dt * particleVector[i].getvy() + factor * particleVector[i].getfy(); //pynew = GetYParticlePosition(i) + GetYParticleVelocity(i) * dt + GetYParticleForce(i) * factor;
+		factor = 0.5 * dt * dt / mass;
+		pxnew = particleVector[i].getx() + dt * particleVector[i].getvx() + factor * particleVector[i].getfx();
+		pynew = particleVector[i].gety() + dt * particleVector[i].getvy() + factor * particleVector[i].getfy();
 		pznew = particleVector[i].getz() + dt * particleVector[i].getvz() + factor * particleVector[i].getfz();
 
-		if (pxnew > 0 && pxnew < ofGetWidth()) { //if (pxnew > GetParticleRadius(i) && pxnew < (BoxWidth - GetParticleRadius(i))) {
-			particleVector[i].setx(pxnew); //				SetXParticlePosition(i, pxnew);  // this the standard VV code here
-			// AllPositionsUnchangedFromLastStep = false;  // this is a stability measure, to detect if the simulation has frozen from frame to frame
+		if (pxnew > 0 && pxnew < ofGetWidth()) {  // this the standard VV code here
+			particleVector[i].setx(pxnew);
 		}
-		else {  // this is to reflect off the walls; added by DRG in lieu of soft walls to improve real time stability... not part of a standard VV scheme      
-			particleVector[i].setx(particleVector[i].getLast_x()); //SetXParticlePosition(i, GetLastXParticlePosition(i));
-			particleVector[i].setvx(-1.0 * particleVector[i].getvx()); // SetXParticleVelocity(i, -1.0 * GetXParticleVelocity(i));
+		else {  // this is to reflect off the walls; added by DRG to improve real time stability... not part of a standard VV
+			particleVector[i].setx(particleVector[i].getLast_x());
+			particleVector[i].setvx(-1.0 * particleVector[i].getvx());
 		}
-		if (pynew > 0 && pynew < ofGetHeight()) {//if (pynew > GetParticleRadius(i) && pynew < (BoxHeight - GetParticleRadius(i))) {     // this the standard VV code here
-			particleVector[i].sety(pynew); // SetYParticlePosition(i, pynew);
+		if (pynew > 0 && pynew < ofGetHeight()) {
+			particleVector[i].sety(pynew);
 		}
-		else {  // this is to reflect off the walls; added by DRG in lieu of soft walls to improve real time stability... not part of a standard VV scheme
+		else {
 			particleVector[i].sety(particleVector[i].getLast_y()); 
 			particleVector[i].setvy(-1.0 * particleVector[i].getvy());
 		}
@@ -283,13 +286,11 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 		fz = 0.0;
 
 		for (kk = 0; kk < nAttractors; ++kk) {
-			if (!ofGetKeyPressed('f')) {
+			if (!ofGetKeyPressed('z')) {
 				if (attractorVec[kk].getAttractorType() == "quadratic") {
-//					forces = particleVector[i].calculateQuadraticForce(attractorVec[kk].get_originalPosition());
                     forces = particleVector[i].calculateQuadraticForce(attractorVec[kk]);
 				}
 				else if (attractorVec[kk].getAttractorType() == "gaussian") {
-//					forces = particleVector[i].calculateGaussianForce(attractorVec[kk].get_originalPosition());
                     forces = particleVector[i].calculateGaussianForce(attractorVec[kk]);
 				}
 			}
@@ -392,7 +393,7 @@ void ofParticleEnsemble::draw() {
 	for (unsigned int i = 0; i < particleVector.size(); i++) {
 		pos = particleVector[i].get_pos();
 		scale = particleVector[i].get_scale();
-		if (!ofGetKeyPressed('f')){ ofSetColor(103, 160, 237); }
+		if (!ofGetKeyPressed('z')){ ofSetColor(103, 160, 237); }
 		else {ofSetColor(103,120,200);}
 		ofDrawCircle(pos.x, pos.y, scale * 4.0);
 	}

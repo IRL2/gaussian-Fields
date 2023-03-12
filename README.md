@@ -21,7 +21,8 @@ The way that I build this project is as follows:
 Running:
 1.  Pressing::
     * 'r' reinitializes the attractors & the particles
-    * 'f' zeros out the forces for as long as 'f' is pressed
+    * 'z' zeros out the forces (for as long as it is pressed)
     * Spacebar pauses/plays the simulation
+    * 'f' runs the velocity verlet integrator in the forward or the backward direction
 2.  If you run into performance issues, reduce within ofApp.cpp the number of attractors 'nattractors' & number of particles 'nparticles'
 3.  Have fun!
