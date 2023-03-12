@@ -16,8 +16,12 @@ class ofParticleEnsemble{
 		void vv_propagatePositionsVelocities(vector <attractor> attractorVec);
 		void BerendsenVelocityRescaling();
 		void CalculateKineticEnergiesAndTemperature();
-		float getTotalKineticEnergy() { return TotalKineticEnergy; }
+
+        float getTotalKineticEnergy() { return TotalKineticEnergy; }
 		int get_numberOfParticles() {return numberOfParticles;};
+        int getStepCount(){return stepNumber;};
+    
+        void resetStepCount(){stepNumber = 0;}
 
 		void ZeroXForces() { for (int i = 0; i < numberOfParticles; ++i) { particleVector[i].setfx(0.0); } }
 		void ZeroYForces() { for (int i = 0; i < numberOfParticles; ++i) { particleVector[i].setfy(0.0); } }
@@ -33,6 +37,7 @@ class ofParticleEnsemble{
 		vector <ofParticle> particleVector;
 		int	    numberOfParticles;
 		int	    stepNumber;
+        int     stepIncrement;
 		float   kb, BerendsenCoupling, Tequilibrium;
 		float   temperature, scaleFactor, InitialKE;
 		bool    BerendsenThermostat;

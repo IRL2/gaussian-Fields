@@ -60,22 +60,28 @@ void ofApp::draw() {
 
 	float KE = pParticleEnsemble->getTotalKineticEnergy();
     float vL = pAttractorEnsemble->get_vectorLength();
+    int stepCount = pParticleEnsemble->getStepCount();
 
     ofSetColor(230);
     writePosition = 10;
-	ofDrawBitmapString("Press 'r' to reset attractor positions. Holding 'z' zeros out the forces.", 10, 20);
-	ofDrawBitmapString("FPS: " + ofToString(int(framesPerSecond)), writePosition, 40);
-    writePosition += 80;
+	ofDrawBitmapString("'r' resets attractor positions. 'z' assigns zero to the forces.", writePosition, 20);
+
+    ofDrawBitmapString("natoms: " + ofToString(nparticles), writePosition, 40);
+    writePosition += 140;
     ofDrawBitmapString("Play/Pause (Spacebar): " + ofToString(playPauseMode), writePosition, 40);
     writePosition += 250;
-    ofDrawBitmapString("For/Backward ('b'): " + ofToString(forBackMode), writePosition, 40);
+    ofDrawBitmapString("Forward/Backward ('b'): " + ofToString(forBackMode), writePosition, 40);
     
     writePosition = 10;
-    ofDrawBitmapString("total KE: " + ofToString(KE), writePosition, 60);
-    writePosition += 200;
-    ofDrawBitmapString("natoms: " + ofToString(nparticles), writePosition, 60);
-    writePosition += 140;
+    ofDrawBitmapString("FPS: " + ofToString(int(framesPerSecond)), writePosition, 60);
+    writePosition += 80;
+    ofDrawBitmapString("stepCount: " + ofToString(stepCount), writePosition, 60);
+    writePosition += 180;
     ofDrawBitmapString("vecLength: " + ofToString(vL), writePosition, 60);
+//    writePosition += 180;
+//    ofDrawBitmapString("total KE: " + ofToString(KE), writePosition, 60);
+
+
 }
 
 //--------------------------------------------------------------
@@ -101,6 +107,7 @@ void ofApp::keyPressed(int key) {
         
         if ((key == 'r') && (particleMode == "HF_PARTICLES")) {
             pAttractorEnsemble->setRadialPositions();
+            pParticleEnsemble->resetStepCount();
             pParticleEnsemble->setNonRandomPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
         }
     }

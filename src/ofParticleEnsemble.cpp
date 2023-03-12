@@ -12,6 +12,7 @@ ofParticleEnsemble::ofParticleEnsemble(int n, float dt) {
 	BerendsenThermostat = false;
 	timestep = dt;
 	mass = 1.0;
+    stepIncrement = 1;
 }
 
 ofParticleEnsemble::~ofParticleEnsemble() {}
@@ -193,6 +194,7 @@ void ofParticleEnsemble::invertVelocities(){
         particleVector[i].setvy(-1.0*particleVector[i].getvy());
         particleVector[i].setvz(-1.0*particleVector[i].getvz());
     }
+    stepIncrement *= -1;
 }
 
 void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attractorVec) {
@@ -313,7 +315,7 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 		particleVector[i].setvz(particleVector[i].getvz() + (particleVector[i].getfz() + particleVector[i].getLast_fz()) * factor);
 	}
 
-	++stepNumber;
+	stepNumber += stepIncrement;
 }
 
 // this function is for the simple Berendsen Thermostat
