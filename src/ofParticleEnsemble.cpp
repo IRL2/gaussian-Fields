@@ -10,7 +10,7 @@ ofParticleEnsemble::ofParticleEnsemble(int n) {
 	particleVector.assign(n, ofParticle());
 	step = 0;
 	BerendsenThermostat = false;
-	timestep = 0.008;
+	timestep = 0.009;
 	mass = 1.0;
 }
 
