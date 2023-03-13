@@ -17,6 +17,7 @@ ofParticleEnsemble::ofParticleEnsemble(int n, float dt) {
     timeReversalInProgress = false;
     nTimeReversalSteps = 30;         // number of steps to decrease/increase the timestep
     timeStepReduction = 0.90;        // factor by which to reduce timestep each nTimeReversalSteps
+    nTimeReversalCalls = 0;
     timeReversalStepCounter = nTimeReversalSteps;
 }
 
@@ -197,17 +198,22 @@ void ofParticleEnsemble::of_propagatePositionsVelocities(vector <glm::vec3> attr
 // as what arises if you simply multiply the timestep by -1. Instead, we reduce the timestep over
 // nTimeReversalSteps, multiply by -1, and then ramp it back up to what it was over nTimeReversalSteps
 
-void ofParticleEnsemble::gentlyReverseTime(){
+float ofParticleEnsemble::gentlyReverseTime(){
 
+    float last_timeStep, new_timeStep;
+    
+    ++nTimeReversalCalls;
+    last_timeStep = timestep;
+    
     if (timeReversalStepCounter > 0){       // slowly reduce the size of the timestep
-        timestep = timeStepReduction * timestep;
+        new_timeStep = timeStepReduction * last_timeStep;
     }
     else if (timeReversalStepCounter==0){   // flip the sign
-        timestep = -1.0 * timestep;
+        new_timeStep = -1.0 * last_timeStep;
         stepIncrement *= -1;
     }
     else if(timeReversalStepCounter < 0){   // slowly increase the size of the timestep
-        timestep = (1/timeStepReduction) * timestep;
+        new_timeStep = (1/timeStepReduction) * last_timeStep;
     }
         
     timeReversalStepCounter -= 1;
@@ -215,7 +221,11 @@ void ofParticleEnsemble::gentlyReverseTime(){
     if (timeReversalStepCounter < (-1*nTimeReversalSteps)){
         timeReversalInProgress = false;
         timeReversalStepCounter = nTimeReversalSteps;
+        nTimeReversalCalls = 0;
     }
+    
+    timestep = new_timeStep;
+    return new_timeStep;
 }
 
 void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attractorVec) {
@@ -238,11 +248,15 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 	//		NumberOfParticlesChangedFlag = false;
 	//	}
 
-    if(timeReversalInProgress){gentlyReverseTime();}
+    nAttractors = int(attractorVec.size());
+    if(timeReversalInProgress){
+        dt = gentlyReverseTime();
+        
+    }
+    else{
+        dt = timestep;
+    }
     
-	nAttractors = int(attractorVec.size());
-	dt = timestep;
-
 	if (BerendsenThermostat) {                //  Berendsen Thermostat
 		BerendsenVelocityRescaling();
 	}

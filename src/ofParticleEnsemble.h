@@ -29,7 +29,7 @@ class ofParticleEnsemble{
 
 		void SetPotentialEnergy(float PE) { TotalPotentialEnergy = PE; };
 
-        void gentlyReverseTime();
+        float gentlyReverseTime();
     
 		void draw();
     
@@ -53,5 +53,6 @@ class ofParticleEnsemble{
         bool    timeReversalInProgress;
         int     timeReversalStepCounter;
         int     nTimeReversalSteps;
+        int     nTimeReversalCalls;
         float   timeStepReduction;
 };
