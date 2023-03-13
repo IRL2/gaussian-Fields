@@ -21,7 +21,7 @@ void attractorEnsemble::setPositionsOnALine(){
     vectorLength = 0;
 }
 
-void attractorEnsemble::setRadialPositions() {
+void attractorEnsemble::setRadialPositions(bool randomizeSigmas) {
     float centerX, centerY, centerZ, theta, thetaStep, maxLength;
     float xpos, ypos;
 
@@ -33,7 +33,15 @@ void attractorEnsemble::setRadialPositions() {
     
     thetaStep = 2.0*PI/numberOfAttractors;
     theta = PI/-2.0;
-    
+
+    // assign randomized sigmas to the attractors
+    if(randomizeSigmas){
+        for (int i = 0; i < numberOfAttractors; i++) {
+            attractorVector[i].set_sigma(ofRandom(20,100));
+            attractorVector[i].recomputeSigmaAmplitudeDerivedValues();
+        }
+    }
+        
     for (int i = 0; i < numberOfAttractors; i++) {
         xpos = centerX + vectorLength * cos(theta);
         ypos = centerY + vectorLength * sin(theta);

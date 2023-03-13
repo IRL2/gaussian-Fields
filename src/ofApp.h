@@ -45,4 +45,6 @@ class ofApp : public ofBaseApp{
 		
         float simulationTimestep;
         int nSimulationStepsPerRenderStep;
+    
+        bool randomizeSigmas;
 };

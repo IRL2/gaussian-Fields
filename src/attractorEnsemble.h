@@ -9,7 +9,7 @@ public:
 	attractorEnsemble(int);
 	~attractorEnsemble();
 
-	void setRadialPositions();
+	void setRadialPositions(bool randomizeSigmas);
 	void setPositionsOnALine();
 	void setAttractorTypes(std::string);
 

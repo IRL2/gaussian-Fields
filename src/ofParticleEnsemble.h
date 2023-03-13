@@ -11,7 +11,7 @@ class ofParticleEnsemble{
 		ofParticleEnsemble(int n, float dt);
 		~ofParticleEnsemble();
 		void setRandomPositionsAndVelocities(int n);
-		void setNonRandomPositionsAndVelocities(vector <attractor> attractorVec);
+		void setRadialPositionsAndVelocities(vector <attractor> attractorVec);
 		void of_propagatePositionsVelocities(vector <glm::vec3> attractPoints);
 		void vv_propagatePositionsVelocities(vector <attractor> attractorVec);
 		void BerendsenVelocityRescaling();
@@ -29,10 +29,13 @@ class ofParticleEnsemble{
 
 		void SetPotentialEnergy(float PE) { TotalPotentialEnergy = PE; };
 
-        void invertVelocities();
+        void gentlyReverseTime();
     
 		void draw();
-
+    
+        void set_timeReversalInProgress(bool flag){timeReversalInProgress = flag;};
+        bool get_timeReversalInProgress(){return timeReversalInProgress;};
+    
 	private:
 		vector <ofParticle> particleVector;
 		int	    numberOfParticles;
@@ -47,5 +50,8 @@ class ofParticleEnsemble{
 		float	SDKineticEnergy;
 		float	timestep;
 		float	mass;
-
+        bool    timeReversalInProgress;
+        int     timeReversalStepCounter;
+        int     nTimeReversalSteps;
+        float   timeStepReduction;
 };

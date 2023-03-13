@@ -13,6 +13,11 @@ ofParticleEnsemble::ofParticleEnsemble(int n, float dt) {
 	timestep = dt;
 	mass = 1.0;
     stepIncrement = 1;
+    // time reversal data members
+    timeReversalInProgress = false;
+    nTimeReversalSteps = 30;         // number of steps to decrease/increase the timestep
+    timeStepReduction = 0.90;        // factor by which to reduce timestep each nTimeReversalSteps
+    timeReversalStepCounter = nTimeReversalSteps;
 }
 
 ofParticleEnsemble::~ofParticleEnsemble() {}
@@ -41,7 +46,7 @@ void ofParticleEnsemble::setRandomPositionsAndVelocities(int n) {
 
 }
 
-void ofParticleEnsemble::setNonRandomPositionsAndVelocities(vector <attractor> attractorVec) {
+void ofParticleEnsemble::setRadialPositionsAndVelocities(vector <attractor> attractorVec) {
 
 	float ax, ay, az, d1, d2, d;
 	float distFromEdge(20.0), fraction(3.0);
@@ -188,13 +193,29 @@ void ofParticleEnsemble::of_propagatePositionsVelocities(vector <glm::vec3> attr
 
 }
 
-void ofParticleEnsemble::invertVelocities(){
-    for (int i = 0; i < particleVector.size(); ++i){
-        particleVector[i].setvx(-1.0*particleVector[i].getvx());
-        particleVector[i].setvy(-1.0*particleVector[i].getvy());
-        particleVector[i].setvz(-1.0*particleVector[i].getvz());
+// The point of this function is to do the time reversal is a way that is not as discontinuous
+// as what arises if you simply multiply the timestep by -1. Instead, we reduce the timestep over
+// nTimeReversalSteps, multiply by -1, and then ramp it back up to what it was over nTimeReversalSteps
+
+void ofParticleEnsemble::gentlyReverseTime(){
+
+    if (timeReversalStepCounter > 0){       // slowly reduce the size of the timestep
+        timestep = timeStepReduction * timestep;
     }
-    stepIncrement *= -1;
+    else if (timeReversalStepCounter==0){   // flip the sign
+        timestep = -1.0 * timestep;
+        stepIncrement *= -1;
+    }
+    else if(timeReversalStepCounter < 0){   // slowly increase the size of the timestep
+        timestep = (1/timeStepReduction) * timestep;
+    }
+        
+    timeReversalStepCounter -= 1;
+
+    if (timeReversalStepCounter < (-1*nTimeReversalSteps)){
+        timeReversalInProgress = false;
+        timeReversalStepCounter = nTimeReversalSteps;
+    }
 }
 
 void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attractorVec) {
@@ -217,6 +238,8 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 	//		NumberOfParticlesChangedFlag = false;
 	//	}
 
+    if(timeReversalInProgress){gentlyReverseTime();}
+    
 	nAttractors = int(attractorVec.size());
 	dt = timestep;
 

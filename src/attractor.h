@@ -22,7 +22,11 @@ public:
     float get_coefficient(){return coefficient;};
     float get_exp_denominator(){return exp_denominator;};
     float get_sigma(){return sigma;};
+    
+    void set_sigma(float sigmaval){sigma = sigmaval;};
 
+    void recomputeSigmaAmplitudeDerivedValues();
+    
 private:
 	glm::vec3 originalPosition;
  	glm::vec3 displacedPosition;

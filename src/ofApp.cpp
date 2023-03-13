@@ -10,8 +10,9 @@ void ofApp::setup() {
 	particleMode = "HF_PARTICLES";
     playPauseMode = "PLAY";
     forBackMode = "FORWARD";
+    randomizeSigmas = false;
 	nattractors = 4;    // 2;
-	nparticles = 22000;  // 2000;
+	nparticles = 10000;  // 2000;
     simulationTimestep = 0.008;
     nSimulationStepsPerRenderStep = 1;
     
@@ -22,7 +23,7 @@ void ofApp::setup() {
 //	pAttractorEnsemble->setAttractorTypes("quadratic"); // options are "gaussian" or "quadratic"
 
     pAttractorEnsemble->setPositionsOnALine();
-    pParticleEnsemble->setNonRandomPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
+    pParticleEnsemble->setRadialPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
 
 }
 
@@ -78,9 +79,9 @@ void ofApp::draw() {
     ofDrawBitmapString("stepCount: " + ofToString(stepCount), writePosition, 60);
     writePosition += 180;
     ofDrawBitmapString("vecLength: " + ofToString(vL), writePosition, 60);
+//    option to write out the total kinetic energy if you want
 //    writePosition += 180;
 //    ofDrawBitmapString("total KE: " + ofToString(KE), writePosition, 60);
-
 
 }
 
@@ -90,25 +91,27 @@ void ofApp::keyPressed(int key) {
     if((key == ' ') && playPauseMode == "PLAY"){playPauseMode = "PAUSE";}
     else if((key == ' ') && playPauseMode == "PAUSE"){playPauseMode = "PLAY";}
 
-    if((key == 'b') && forBackMode == "FORWARD"){
-        forBackMode = "BACKWARD";
-        pParticleEnsemble->invertVelocities();
-    }
-    else if((key == 'b') && forBackMode == "BACKWARD"){
-        forBackMode = "FORWARD";
-        pParticleEnsemble->invertVelocities();
+    if(pParticleEnsemble->get_timeReversalInProgress()==false){  //only allow time reversal if one is not in progress
+        if((key == 'b') && forBackMode == "FORWARD"){
+            forBackMode = "BACKWARD";
+            pParticleEnsemble->set_timeReversalInProgress(true);
+        }
+        else if((key == 'b') && forBackMode == "BACKWARD"){
+            forBackMode = "FORWARD";
+            pParticleEnsemble->set_timeReversalInProgress(true);
+        }
     }
     
     if (playPauseMode == "PLAY"){
         if ((key == 'r') && (particleMode == "OF_PARTICLES")) {
-            pAttractorEnsemble->setRadialPositions();
+            pAttractorEnsemble->setRadialPositions(randomizeSigmas);
             pParticleEnsemble->setRandomPositionsAndVelocities(nparticles);
         }
         
         if ((key == 'r') && (particleMode == "HF_PARTICLES")) {
-            pAttractorEnsemble->setRadialPositions();
+            pAttractorEnsemble->setRadialPositions(randomizeSigmas);
             pParticleEnsemble->resetStepCount();
-            pParticleEnsemble->setNonRandomPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
+            pParticleEnsemble->setRadialPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
         }
     }
 }
