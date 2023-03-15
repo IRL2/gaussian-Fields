@@ -13,12 +13,13 @@ ofParticleEnsemble::ofParticleEnsemble(int n, float dt) {
 	timestep = dt;
 	mass = 1.0;
     stepIncrement = 1;
-    // time reversal data members
+    // initializaion of data members for time reversal
     timeReversalInProgress = false;
-    nTimeReversalSteps = 30;         // number of steps to decrease/increase the timestep
-    timeStepReduction = 0.90;        // factor by which to reduce timestep each nTimeReversalSteps
     nTimeReversalCalls = 0;
+    nTimeReversalSteps = 60; //30;         // number of steps to decrease/increase the timestep
+    timeStepReduction = 0.90; //0.90;      // factor by which to reduce timestep each nTimeReversalSteps
     timeReversalStepCounter = nTimeReversalSteps;
+    last_timeStep = timestep;
 }
 
 ofParticleEnsemble::~ofParticleEnsemble() {}
@@ -200,10 +201,7 @@ void ofParticleEnsemble::of_propagatePositionsVelocities(vector <glm::vec3> attr
 
 float ofParticleEnsemble::gentlyReverseTime(){
 
-    float last_timeStep, new_timeStep;
-    
-    ++nTimeReversalCalls;
-    last_timeStep = timestep;
+    float new_timeStep;
     
     if (timeReversalStepCounter > 0){       // slowly reduce the size of the timestep
         new_timeStep = timeStepReduction * last_timeStep;
@@ -211,9 +209,41 @@ float ofParticleEnsemble::gentlyReverseTime(){
     else if (timeReversalStepCounter==0){   // flip the sign
         new_timeStep = -1.0 * last_timeStep;
         stepIncrement *= -1;
+        timestep *= -1;
+    }
+    else if(timeReversalStepCounter == 0){   // slowly increase the size of the timestep
+        new_timeStep = (1/timeStepReduction) * last_timeStep;
+    }
+    
+    timeReversalStepCounter -= 1;
+
+    if (timeReversalStepCounter < (-1*nTimeReversalSteps)){
+        timeReversalInProgress = false;
+        timeReversalStepCounter = nTimeReversalSteps;
+    }
+    
+    last_timeStep = new_timeStep;
+    return new_timeStep;
+}
+
+float ofParticleEnsemble::gentlyReverseTimeWithCos(){
+
+    float new_timeStep, stepSize;
+    
+    ++nTimeReversalCalls;
+    
+    stepSize = 2*PI/(2*nTimeReversalSteps+1);
+    
+    if (timeReversalStepCounter > 0){       // slowly reduce the size of the timestep
+        new_timeStep = timestep*0.5*(cos(nTimeReversalCalls*stepSize)+1);
+    }
+    else if (timeReversalStepCounter==0){   // flip the sign
+        new_timeStep = -1.0 * last_timeStep;
+        stepIncrement *= -1;
+        timestep *= -1;
     }
     else if(timeReversalStepCounter < 0){   // slowly increase the size of the timestep
-        new_timeStep = (1/timeStepReduction) * last_timeStep;
+        new_timeStep = timestep*0.5*(cos(nTimeReversalCalls*stepSize)+1);
     }
         
     timeReversalStepCounter -= 1;
@@ -224,9 +254,10 @@ float ofParticleEnsemble::gentlyReverseTime(){
         nTimeReversalCalls = 0;
     }
     
-    timestep = new_timeStep;
+    last_timeStep = new_timeStep;
     return new_timeStep;
 }
+
 
 void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attractorVec) {
 
@@ -250,8 +281,8 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 
     nAttractors = int(attractorVec.size());
     if(timeReversalInProgress){
-        dt = gentlyReverseTime();
-        
+//        dt = gentlyReverseTime();
+        dt = gentlyReverseTimeWithCos();
     }
     else{
         dt = timestep;
@@ -434,6 +465,6 @@ void ofParticleEnsemble::draw() {
 		scale = particleVector[i].get_scale();
 		if (!ofGetKeyPressed('z')){ ofSetColor(103, 160, 237); }
 		else {ofSetColor(103,120,200);}
-		ofDrawCircle(pos.x, pos.y, scale * 4.0);
+		ofDrawCircle(pos.x, pos.y, scale * 2.0);
 	}
 }

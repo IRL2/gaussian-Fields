@@ -30,6 +30,7 @@ class ofParticleEnsemble{
 		void SetPotentialEnergy(float PE) { TotalPotentialEnergy = PE; };
 
         float gentlyReverseTime();
+        float gentlyReverseTimeWithCos();
     
 		void draw();
     
@@ -49,6 +50,7 @@ class ofParticleEnsemble{
 		float	averageKineticEnergy;
 		float	SDKineticEnergy;
 		float	timestep;
+        float   last_timeStep;
 		float	mass;
         bool    timeReversalInProgress;
         int     timeReversalStepCounter;

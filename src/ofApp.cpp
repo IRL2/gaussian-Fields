@@ -12,8 +12,8 @@ void ofApp::setup() {
     forBackMode = "FORWARD";
     randomizeSigmas = false;
 	nattractors = 4;    // 2;
-	nparticles = 10000;  // 2000;
-    simulationTimestep = 0.008;
+	nparticles = 5000;  // 2000;
+    simulationTimestep = 0.007;
     nSimulationStepsPerRenderStep = 1;
     
 	pParticleEnsemble = new ofParticleEnsemble(nparticles,simulationTimestep);
