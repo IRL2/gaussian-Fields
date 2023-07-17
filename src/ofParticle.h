@@ -81,6 +81,9 @@ class ofParticle{
 			x *= x; x *= x; x *= x; x *= x;
 			return x;
 		}
+    
+        void setColor(ofColor colorVal){particleColor = colorVal;};
+        ofColor getColor(){return particleColor;}
 
     private:
 		glm::vec3 pos;
@@ -97,4 +100,5 @@ class ofParticle{
 		float mass;
 		float kineticEnergy;
 		
+        ofColor particleColor;
 };

@@ -47,4 +47,11 @@ class ofApp : public ofBaseApp{
         int nSimulationStepsPerRenderStep;
     
         bool randomizeSigmas;
+        bool randomizeMajorMinorAxis;
+        bool displayGaussians;
+        bool randomizeParticleRadii;
+        bool randomizeAmplitudes;
+        bool manyColors;
+    
+        ofColor bgColor;
 };

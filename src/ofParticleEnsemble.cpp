@@ -53,10 +53,16 @@ void ofParticleEnsemble::setRadialPositionsAndVelocities(vector <attractor> attr
 	float ax, ay, az, d1, d2, d;
 	float distFromEdge(20.0), fraction(3.0);
 	float height, width, theta, xpolar, ypolar;
-	int anyLeftovers, nAttractors, loopSize, particleIndex(0);
+	int anyLeftovers, nAttractors, colorCtr(0), loopSize, particleIndex(0);
 	glm::vec3 attractor_position;
 	vector <int> loopSizeVector;
-
+//    vector<ofColor> colorVec;
+    
+//    colorVec.push_back(ofColor::teal);
+//    colorVec.push_back(ofColor::steelBlue);
+//    colorVec.push_back(ofColor::paleVioletRed);
+//    colorVec.push_back(ofColor::darkGoldenRod);
+    
 	width = ofGetWidth();
 	height = ofGetHeight();
 
@@ -71,28 +77,30 @@ void ofParticleEnsemble::setRadialPositionsAndVelocities(vector <attractor> attr
 	if (anyLeftovers > 0) {
 		loopSizeVector[nAttractors - 1] = loopSize + anyLeftovers;
 	}
-
+    
 	for (int kk = 0; kk < nAttractors; kk++) {
 
 		attractor_position = attractorVec[kk].get_originalPosition();
 		ax = attractor_position.x;
 		ay = attractor_position.y;
 		az = attractor_position.z;
-
+/*
 		d1 = min(ax / fraction, (width - ax) / fraction);
 		d2 = min(ay / fraction, (height - ay) / fraction);
 		d = min(d1, d2);
-
+*/
 		for (int i = 0; i < loopSizeVector[kk]; i++) {
 
 			particleVector[particleIndex].set_uniqueVal(ofRandom(-10000, 10000));
 
+            particleVector[particleIndex].setColor(attractorVec[kk].get_color());
+            
 			theta = float(i)*2*PI/loopSizeVector[kk];
 			xpolar = cos(theta);
 			ypolar = sin(theta);
 
-			particleVector[particleIndex].setx(ax + d*xpolar);
-			particleVector[particleIndex].sety(ay + d*ypolar);
+			particleVector[particleIndex].setx(ax + attractorVec[kk].get_initialParticleRadii()*xpolar);
+			particleVector[particleIndex].sety(ay + attractorVec[kk].get_initialParticleRadii()*ypolar);
 			particleVector[particleIndex].setz(0);
 
 			particleVector[particleIndex].setvx(0);
@@ -108,6 +116,8 @@ void ofParticleEnsemble::setRadialPositionsAndVelocities(vector <attractor> attr
 
 			++particleIndex;
 		}
+//        ++colorCtr;
+//        if (colorCtr>=colorVec.size()){colorCtr=0;}
 	}
 }
 
@@ -463,8 +473,12 @@ void ofParticleEnsemble::draw() {
 	for (unsigned int i = 0; i < particleVector.size(); i++) {
 		pos = particleVector[i].get_pos();
 		scale = particleVector[i].get_scale();
-		if (!ofGetKeyPressed('z')){ ofSetColor(103, 160, 237); }
-		else {ofSetColor(103,120,200);}
-		ofDrawCircle(pos.x, pos.y, scale * 2.0);
+		if (ofGetKeyPressed('z')){
+            ofSetColor(255, 255, 255);
+        }
+		else {
+            ofSetColor(particleVector[i].getColor());
+        }
+		ofDrawCircle(pos.x, pos.y, scale * 1.0);
 	}
 }
