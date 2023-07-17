@@ -44,7 +44,10 @@ class ofApp : public ofBaseApp{
 	    float framesPerSecond;
 		
         float simulationTimestep;
+
         int nSimulationStepsPerRenderStep;
+    
+        float thermostatTemp;
     
         bool randomizeSigmas;
         bool randomizeMajorMinorAxis;

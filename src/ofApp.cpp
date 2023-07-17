@@ -22,12 +22,15 @@ void ofApp::setup() {
 //  whether the particles corresponding to a given attractor need have the same color or not
     manyColors = false;
 
+//  whether to thermostat the dynamics - setting to "0" is no thermostat
+    thermostatTemp = 0;
+    
     nattractors = 4;    // 2;
 	nparticles = 16000;  // 2000;
     simulationTimestep = 0.005;
     nSimulationStepsPerRenderStep = 1;
     
-	pParticleEnsemble = new ofParticleEnsemble(nparticles,simulationTimestep);
+	pParticleEnsemble = new ofParticleEnsemble(nparticles,simulationTimestep,thermostatTemp);
 	pAttractorEnsemble = new attractorEnsemble(nattractors);
 
 	pAttractorEnsemble->setAttractorTypes("gaussian"); // options are "gaussian" or "quadratic"
@@ -101,8 +104,16 @@ void ofApp::draw() {
 
 
 //    option to write out the total kinetic energy if you want
-//    writePosition += 180;
-//    ofDrawBitmapString("total KE: " + ofToString(KE), writePosition, 60);
+    writePosition += 180;
+    ofDrawBitmapString("total KE: " + ofToString(KE), writePosition, 60);
+    
+    writePosition += 180;
+    if (thermostatTemp == 0){
+        ofDrawBitmapString("Thermostat OFF", writePosition, 60);
+    }
+    else {
+        ofDrawBitmapString("temp(+/-): " + ofToString(thermostatTemp), writePosition, 60);
+    }
     
     // draw center
     ofDrawCircle(ofGetWidth()/2, ofGetHeight()/2, 2.0);
@@ -137,6 +148,16 @@ void ofApp::keyPressed(int key) {
             pParticleEnsemble->resetStepCount();
             pParticleEnsemble->setRadialPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
         }
+    }
+    
+    float tempStep = 20;
+    if (key == '='){
+        thermostatTemp += tempStep;
+        pParticleEnsemble->set_Tequilibrium(thermostatTemp);
+    }
+    if (key == '-' && thermostatTemp >= tempStep){
+        thermostatTemp -= tempStep;
+        pParticleEnsemble->set_Tequilibrium(thermostatTemp);
     }
 }
 

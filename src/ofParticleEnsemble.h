@@ -8,7 +8,7 @@ class ofParticle;
 class ofParticleEnsemble{
 
     public:
-		ofParticleEnsemble(int n, float dt);
+		ofParticleEnsemble(int n, float dt, float temp);
 		~ofParticleEnsemble();
 		void setRandomPositionsAndVelocities(int n);
 		void setRadialPositionsAndVelocities(vector <attractor> attractorVec);
@@ -36,6 +36,8 @@ class ofParticleEnsemble{
     
         void set_timeReversalInProgress(bool flag){timeReversalInProgress = flag;};
         bool get_timeReversalInProgress(){return timeReversalInProgress;};
+
+        void set_Tequilibrium(float temp){Tequilibrium = temp;}
     
 	private:
 		vector <ofParticle> particleVector;
