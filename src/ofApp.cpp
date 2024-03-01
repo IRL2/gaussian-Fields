@@ -7,13 +7,17 @@ void ofApp::setup() {
 	ofSetFrameRate(60);
 
 //	particleMode = "OF_PARTICLES";
-	particleMode = "HF_PARTICLES";
+	particleMode = "HF_PARTICLES";     
     playPauseMode = "PLAY";
     forBackMode = "FORWARD";
     randomizeSigmas = false;
-	nattractors = 4;    // 2;
-	nparticles = 5000;  // 2000;
-    simulationTimestep = 0.007;
+    randomizeAmplitudes = false;
+    randomizeMajorMinorAxis = false;
+    randomizeParticleRadii = false;
+    manyColors = true;
+	nattractors = 16 ;    // 2;
+	nparticles = 12000;  // 2000;
+    simulationTimestep = 0.005;
     nSimulationStepsPerRenderStep = 1;
     
 	pParticleEnsemble = new ofParticleEnsemble(nparticles,simulationTimestep);
@@ -64,6 +68,7 @@ void ofApp::draw() {
     int stepCount = pParticleEnsemble->getStepCount();
 
     ofSetColor(230);
+    /*
     writePosition = 10;
 	ofDrawBitmapString("'r' resets attractor positions. 'z' assigns zero to the forces.", writePosition, 20);
 
@@ -82,6 +87,9 @@ void ofApp::draw() {
 //    option to write out the total kinetic energy if you want
 //    writePosition += 180;
 //    ofDrawBitmapString("total KE: " + ofToString(KE), writePosition, 60);
+    */
+    // draw center
+    ofDrawCircle(ofGetWidth()/2, ofGetHeight()/2, 2.0);
 
 }
 
@@ -104,12 +112,12 @@ void ofApp::keyPressed(int key) {
     
     if (playPauseMode == "PLAY"){
         if ((key == 'r') && (particleMode == "OF_PARTICLES")) {
-            pAttractorEnsemble->setRadialPositions(randomizeSigmas);
+            pAttractorEnsemble->setRadialPositions(randomizeSigmas, randomizeAmplitudes, randomizeMajorMinorAxis, randomizeParticleRadii, manyColors);
             pParticleEnsemble->setRandomPositionsAndVelocities(nparticles);
         }
         
         if ((key == 'r') && (particleMode == "HF_PARTICLES")) {
-            pAttractorEnsemble->setRadialPositions(randomizeSigmas);
+            pAttractorEnsemble->setRadialPositions(randomizeSigmas, randomizeAmplitudes, randomizeMajorMinorAxis, randomizeParticleRadii, manyColors);
             pParticleEnsemble->resetStepCount();
             pParticleEnsemble->setRadialPositionsAndVelocities(pAttractorEnsemble->getAttractorVector());
         }

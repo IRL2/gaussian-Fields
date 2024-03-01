@@ -9,7 +9,7 @@ public:
 	attractorEnsemble(int);
 	~attractorEnsemble();
 
-	void setRadialPositions(bool randomizeSigmas);
+	void setRadialPositions(bool randomizeSigmas, bool randomizeAmplitudes, bool randomizeMajorMinorAxis, bool randomizeInitialParticleRadii, bool multipleColors);
 	void setPositionsOnALine();
 	void setAttractorTypes(std::string);
 
@@ -32,5 +32,7 @@ private:
 	vector <glm::vec3> attractPointsPosition;
     
     float vectorLength;
+    
+    bool displayGaussians;
 
 };
