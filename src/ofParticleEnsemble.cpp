@@ -3,13 +3,13 @@
 
 
 //------------------------------------------------------------------
-ofParticleEnsemble::ofParticleEnsemble(int n, float dt) {
+ofParticleEnsemble::ofParticleEnsemble(int n, float dt, float temp) {
 	kb = 8.314;
 	scaleFactor = 1.0;
 	numberOfParticles = n;
 	particleVector.assign(n, ofParticle());
 	stepNumber = 0;
-	BerendsenThermostat = false;
+//	BerendsenThermostat = true;
 	timestep = dt;
 	mass = 1.0;
     stepIncrement = 1;
@@ -20,6 +20,8 @@ ofParticleEnsemble::ofParticleEnsemble(int n, float dt) {
     timeStepReduction = 0.90; //0.90;      // factor by which to reduce timestep each nTimeReversalSteps
     timeReversalStepCounter = nTimeReversalSteps;
     last_timeStep = timestep;
+    Tequilibrium = temp;
+    BerendsenCoupling = 1.0;
 }
 
 ofParticleEnsemble::~ofParticleEnsemble() {}
@@ -103,9 +105,9 @@ void ofParticleEnsemble::setRadialPositionsAndVelocities(vector <attractor> attr
 			particleVector[particleIndex].sety(ay + attractorVec[kk].get_initialParticleRadii()*ypolar);
 			particleVector[particleIndex].setz(0);
 
-			particleVector[particleIndex].setvx(0);
-			particleVector[particleIndex].setvy(0);
-			particleVector[particleIndex].setvz(0);
+			particleVector[particleIndex].setvx(0.0);
+			particleVector[particleIndex].setvy(0.0);
+			particleVector[particleIndex].setvz(0.0);
 
 			particleVector[particleIndex].setfx(0);
 			particleVector[particleIndex].setfy(0);
@@ -298,7 +300,7 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
         dt = timestep;
     }
     
-	if (BerendsenThermostat) {                //  Berendsen Thermostat
+	if (Tequilibrium != 0) {                //  Berendsen Thermostat
 		BerendsenVelocityRescaling();
 	}
 
@@ -399,13 +401,16 @@ void ofParticleEnsemble::vv_propagatePositionsVelocities(vector <attractor> attr
 // this function is for the simple Berendsen Thermostat
 void ofParticleEnsemble::BerendsenVelocityRescaling() {
 
-	float scaleFactor;
+	float scaleFactor, denominator;
 	int i;
 
 	// this is an extra velocity rescaling measure to improve real-time stability... not part of Berendsen!!!!
-	//    be sure that no single particle has a KE which differs from the average by 3 standard deviations (sigmas) 
+	//    be sure that no single particle has a KE which differs from the average by 3 standard deviations (sigmas)
+    
 	CalculateKineticEnergiesAndTemperature();
-	float sigma(2.0);
+
+/*
+    float sigma(2.0);
 	for (i = 0; i < numberOfParticles; ++i) {
 		if ((particleVector[i].get_kineticEnergy() - averageKineticEnergy) > (sigma * SDKineticEnergy)) { // if ((GetParticleKineticEnergy(i) - AverageKineticEnergy) > (sigma * SDKineticEnergy)) {
 			scaleFactor = (sigma * SDKineticEnergy) / (particleVector[i].get_kineticEnergy() - averageKineticEnergy); // (sigma * SDKineticEnergy) / (GetParticleKineticEnergy(i) - AverageKineticEnergy);
@@ -414,8 +419,8 @@ void ofParticleEnsemble::BerendsenVelocityRescaling() {
 			particleVector[i].setvz(scaleFactor * particleVector[i].getvz());
 		}
 	}
-
-
+*/
+    
 	/* DRG - commenting out for now this stabilty measure 3 Jun 2022
 	// again, a real-time stability measure... not part of Berendsen!!!!
 	// re-initialize the system if the temperature gets crazy
@@ -434,7 +439,13 @@ void ofParticleEnsemble::BerendsenVelocityRescaling() {
 
 	// this code here is the bona fide Berendsen thermostat !!!!
 	
-	scaleFactor = sqrt(Tequilibrium / (BerendsenCoupling * temperature));
+    denominator = BerendsenCoupling * temperature;
+    if (denominator != 0){
+        scaleFactor = sqrt(Tequilibrium / (denominator));
+    }
+    else {
+        scaleFactor = 1e-7;
+    }
 	if (scaleFactor != 1.0) {
 		for (int i = 0; i < numberOfParticles; ++i) { //for (int i = 0; i < GetNumberOfParticles(); ++i) {						//rescale the velocities
 			particleVector[i].setvx(scaleFactor * particleVector[i].getvx()); // SetXParticleVelocity(i, scaleFactor * GetXParticleVelocity(i));
@@ -459,7 +470,9 @@ void ofParticleEnsemble::CalculateKineticEnergiesAndTemperature() {   // calcula
 
 	averageKineticEnergy = TotalKineticEnergy / numberOfParticles;
 	temperature = TotalKineticEnergy / (numberOfParticles * kb);
-	for (int i = 0; i < numberOfParticles; ++i) { sum += pow((particleVector[i].get_kineticEnergy() - averageKineticEnergy), 2.0); }
+	for (int i = 0; i < particleVector.size(); ++i) {
+        sum += pow((particleVector[i].get_kineticEnergy() - averageKineticEnergy), 2.0);
+    }
 	SDKineticEnergy = sqrt(sum / numberOfParticles);
  
 }
@@ -479,6 +492,6 @@ void ofParticleEnsemble::draw() {
 		else {
             ofSetColor(particleVector[i].getColor());
         }
-		ofDrawCircle(pos.x, pos.y, scale * 2.0);
+		ofDrawCircle(pos.x, pos.y, scale * 1.0);
 	}
 }

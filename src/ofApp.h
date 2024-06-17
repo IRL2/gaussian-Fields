@@ -44,7 +44,10 @@ class ofApp : public ofBaseApp{
 	    float framesPerSecond;
 		
         float simulationTimestep;
+
         int nSimulationStepsPerRenderStep;
+    
+        float thermostatTemp;
     
         bool randomizeSigmas;
         bool randomizeMajorMinorAxis;
@@ -52,4 +55,5 @@ class ofApp : public ofBaseApp{
         bool randomizeParticleRadii;
         bool randomizeAmplitudes;
         bool manyColors;
+        ofColor bgColor;
 };

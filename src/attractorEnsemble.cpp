@@ -35,8 +35,11 @@ void attractorEnsemble::setRadialPositions(bool randomizeSigmas, bool randomizeA
     
     vectorLength = ofRandom(0.0, maxLength-100);  // set the vector Lengths
 //    vectorLength = 142.5;
-    color1 = ofColor::teal;
-    color2 = ofColor::steelBlue;
+
+//    color1 = ofColor::teal;
+    color1 = ofColor::floralWhite;
+//    color2 = ofColor::steelBlue;
+
     sigma = ofRandom(60,120);
 //    sigma = 85.5;
     amplitude = ofRandom(20000,80000);
